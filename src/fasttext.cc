@@ -297,7 +297,7 @@ void FastText::test(std::istream& in, int32_t k) {
   int32_t nexamples = 0, nlabels = 0;
   double precision = 0.0;
   std::vector<int32_t> line, labels;
-
+  std::vector<bool> result;
   while (in.peek() != EOF) {
     dict_->getLine(in, line, labels, model_->rng);
     if (labels.size() > 0 && line.size() > 0) {
@@ -306,7 +306,11 @@ void FastText::test(std::istream& in, int32_t k) {
       for (auto it = modelPredictions.cbegin(); it != modelPredictions.cend(); it++) {
         if (std::find(labels.begin(), labels.end(), it->second) != labels.end()) {
           precision += 1.0;
+	  result.push_back(true);
         }
+	else{
+	  result.push_back(false);
+	}
       }
       nexamples++;
       nlabels += labels.size();
@@ -317,6 +321,9 @@ void FastText::test(std::istream& in, int32_t k) {
   std::cout << "P@" << k << "\t" << precision / (k * nexamples) << std::endl;
   std::cout << "R@" << k << "\t" << precision / nlabels << std::endl;
   std::cerr << "Number of examples: " << nexamples << std::endl;
+  for (auto it =result.cbegin();it!=result.cend();it++){
+    std::cout<<*it<<std::endl;
+  }
 }
 
 void FastText::predict(std::istream& in, int32_t k,

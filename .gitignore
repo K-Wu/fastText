@@ -2,6 +2,11 @@
 *.o
 *.bin
 *.vec
+*.id
+*.gz
+*.txt
+*.train
+*.valid
 data
 fasttext
 result
